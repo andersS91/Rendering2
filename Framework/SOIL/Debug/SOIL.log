@@ -1,8 +1,1 @@
-﻿cl : Command line warning D9030: '/Gm' is incompatible with multiprocessing; ignoring /MP switch
-  stb_image_write.c
-  stb_image.c
-  SOIL.c
-  image_helper.c
-  image_DXT.c
-  Generating Code...
-  SOIL.vcxproj -> C:\02562 Rendering2\Rendering2\Framework\Debug\SOIL.lib
+﻿  SOIL.vcxproj -> C:\02562 Rendering2\Rendering2\Framework\Debug\SOIL.lib

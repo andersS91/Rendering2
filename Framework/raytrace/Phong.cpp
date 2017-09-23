@@ -36,5 +36,18 @@ float3 Phong::shade(const Ray& r, HitInfo& hit, bool emit) const
   //
   // Hint: Call the sample function associated with each light in the scene.
 
-  return Lambertian::shade(r, hit, emit);
+  float3 result = make_float3(0.0f);
+  float3 L, dir, R;
+
+  for (uint i = 0; i < lights.size(); ++i)
+  {
+	  if (lights[i]->sample(hit.position, dir, L))
+	  {
+		  R = reflect(-dir, hit.shading_normal);
+		  result += rho_d*L*fmaxf(dot(hit.shading_normal, dir), 0) + rho_s*L* powf(fmaxf(dot(R, -r.direction), 0), s);
+
+	  }
+  }
+
+  return result;
 }
