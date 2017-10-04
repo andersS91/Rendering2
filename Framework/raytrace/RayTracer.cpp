@@ -25,16 +25,12 @@ bool RayTracer::trace_reflected(const Ray& in, const HitInfo& in_hit, Ray& out, 
 	// Hints: (a) There is a reflect function available in the OptiX math library.
 	//        (b) Set out_hit.ray_ior and out_hit.trace_depth.
 
-	float3 reflectedDir = optix::reflect(in.direction, in_hit.shading_normal);
-
-	out = Ray(in_hit.position, reflectedDir, 0, 0.01f);
+	out = Ray(in_hit.position, optix::reflect(in.direction, in_hit.shading_normal), 0, 0.01f);
 
 	if (this->trace_to_closest(out, out_hit))
 	{
 		out_hit.trace_depth = in_hit.trace_depth + 1;
-
 		out_hit.ray_ior = in_hit.ray_ior;
-
 		return true;
 	}
 
@@ -71,7 +67,6 @@ bool RayTracer::trace_refracted(const Ray& in, const HitInfo& in_hit, Ray& out, 
 		if (this->trace_to_closest(out, out_hit))
 		{
 			out_hit.trace_depth = in_hit.trace_depth + 1;
-
 			return true;
 		}
 	}
@@ -101,9 +96,16 @@ bool RayTracer::trace_refracted(const Ray& in, const HitInfo& in_hit, Ray& out, 
 
 float RayTracer::get_ior_out(const Ray& in, const HitInfo& in_hit, float3& dir, float3& normal, float& cos_theta_in) const
 {
+	//The normal for the point that was hit is the same
 	normal = in_hit.shading_normal;
+
+	//New direction is the opposite of the ingoing
 	dir = -in.direction;
+
+	//Angle between normal and direction
 	cos_theta_in = dot(normal, dir);
+
+	//If under the surface reverse the normal and the angle
 	if (cos_theta_in < 0.0)
 	{
 		normal = -normal;

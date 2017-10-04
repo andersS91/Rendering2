@@ -11,7 +11,7 @@
 #include "ObjMaterial.h"
 #include "Object3D.h"
 
-bool intersect_triangle(const optix::Ray& r, 
+bool intersect_trianglex(const optix::Ray& r, 
                         const optix::float3& v0, 
                         const optix::float3& v1, 
                         const optix::float3& v2, 

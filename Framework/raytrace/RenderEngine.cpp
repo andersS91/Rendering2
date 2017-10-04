@@ -251,10 +251,9 @@ void RenderEngine::render()
   cout << "Raytracing";
   Timer timer;
   timer.start();
-  #pragma omp parallel for private(randomizer)
-
   float3 sum = make_float3(0.0f, 0.0f, 0.0f);
-  for(uint y = 0; y < static_cast<int>(res.y); ++y)
+#pragma omp parallel for private(randomizer)
+  for(int y = 0; y < static_cast<int>(res.y); ++y)
   {
     // Insert the inner loop which runs through each pixel in a row and
     // stores the result of calling compute_pixel in the image array.

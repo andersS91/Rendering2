@@ -38,6 +38,8 @@ bool AreaLight::sample(const float3& pos, float3& dir, float3& L) const
   //        (b) Use the function get_emission(...) to get the radiance
   //        emitted by a triangle in the mesh.
 
+  mesh->compute_bbox().center();
+
   return false;  
 }
 

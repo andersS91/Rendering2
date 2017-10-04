@@ -51,6 +51,9 @@ bool intersect_trianglex(const Ray& ray,
 		return false;
 	}
 	else {
+		if (t < ray.tmin || t > ray.tmax) {
+			return false;
+		}
 		return true;
 	}
 
