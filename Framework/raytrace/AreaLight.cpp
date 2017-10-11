@@ -60,10 +60,8 @@ bool AreaLight::sample(const float3& pos, float3& dir, float3& L) const
 	  normal += normals.vertex(i);
   }
   normal = normalize(normal);
-  float cosAngle;
   for (i = 0; i < mesh->face_areas.size(); i++) {
-	  cosAngle = abs(dot(dir,normals.vertex(i))/(length(dir)*length(normals.vertex(i))));
-	  L += get_emission(i) * mesh->face_areas.at(i) * cosAngle;
+	  L += get_emission(i) * mesh->face_areas.at(i) * abs(dot(dir, normals.vertex(i)) / (length(dir)*length(normals.vertex(i))));
   }
   L = L / (dist * dist);
   
