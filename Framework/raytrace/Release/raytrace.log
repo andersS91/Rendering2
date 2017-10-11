@@ -1,9 +1,8 @@
-﻿  AreaLight.cpp
-  TriMesh.cpp
+﻿  TriMesh.cpp
   Generating code
-  1 of 2174 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+  3 of 2176 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    30 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   raytrace.vcxproj -> C:\02562 Rendering2\Rendering2\Framework\Release\raytrace.exe
   raytrace.vcxproj -> C:\02562 Rendering2\Rendering2\Framework\Release\raytrace.pdb (Full PDB)
