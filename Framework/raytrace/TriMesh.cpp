@@ -53,21 +53,25 @@ bool TriMesh::intersect(const Ray& r, HitInfo& hit, unsigned int prim_idx) const
 	//        vertex normals for computing the shading normal. If not, use
 	//        the geometric normal as shading normal.
 
-	float3 v0 = geometry.vertex(face.x);
-	float3 v1 = geometry.vertex(face.y);
-	float3 v2 = geometry.vertex(face.z);
+	const float3 v0 = geometry.vertex(face.x);
+	const float3 v1 = geometry.vertex(face.y);
+	const float3 v2 = geometry.vertex(face.z);
+	const float3 n0 = normals.vertex(face.x);
+	const float3 n1 = normals.vertex(face.y);
+	const float3 n2 = normals.vertex(face.z);
 	float3 n = make_float3(0.0f);
-	float tmark, v, w = 0.0f;
+	float tmark = 0.0f;
+	float v = 0.0f;
+	float w = 0.0f;
 
 	//const uint3& norms = normals.face(prim_idx);
 	//const uint3& texCo = texcoords.face(prim_idx);
 
-	if (intersect_trianglex(r, v0, v1, v2, n, tmark, v, w)) {
-		tmark = fmaxf(tmark, 0.0f);
+	if (TriMesh::intersect_triangle(r, v0, v1, v2, n, tmark, v, w)) {
+		n = normalize(n0*(1.0f-v-w) + n1*v + n2*w);
 		hit.has_hit = true;
 		hit.dist = tmark;
 		hit.position = r.origin + r.direction * tmark;
-		n = normalize(n);
 		hit.geometric_normal = n;
 		hit.shading_normal = n;
 		hit.material = &materials[mat_idx[prim_idx]];
@@ -75,6 +79,52 @@ bool TriMesh::intersect(const Ray& r, HitInfo& hit, unsigned int prim_idx) const
 	}
 
 	return false;
+}
+
+bool TriMesh::intersect_triangle(const Ray& ray,
+	const float3& v0,
+	const float3& v1,
+	const float3& v2,
+	float3& n,
+	float& t,
+	float& v,
+	float& w) const
+{
+	// Implement ray-triangle intersection here (see Listing 1 in the lecture note).
+	// Note that OptiX also has an implementation, so you can get away
+	// with not implementing this function. However, I recommend that
+	// you implement it for completeness.
+	static const float EPSILON = 1e-6f;
+	const float3 e1 = v1 - v0;
+	const float3 e2 = v2 - v0;
+	n = normalize(cross(e1, e2));
+
+	const float3 q = cross(ray.direction, e2);
+
+	const float a = dot(e1, q);
+	if (a > -EPSILON && a < EPSILON) {
+		return false;
+	}
+
+	const float3 s = ray.origin - v0;
+	const float3 r = cross(s, e1);
+
+	v = dot(s, q) / a;
+	w = dot(ray.direction, r) / a;
+
+	const float u = 1.0f - (v + w);
+	if (u < 0.0f || u > 1.0f) {
+		return false;
+	}
+	if (v < 0.0f || u + v > 1.0f) {
+		return false;
+	}
+
+	t = dot(e2, r) * (1.0f / a);
+	if (t < ray.tmin || t > ray.tmax) {
+		return false;
+	}
+	return true;
 }
 
 void TriMesh::transform(const Matrix4x4& m)

@@ -11,15 +11,6 @@
 #include "ObjMaterial.h"
 #include "Object3D.h"
 
-bool intersect_trianglex(const optix::Ray& r, 
-                        const optix::float3& v0, 
-                        const optix::float3& v1, 
-                        const optix::float3& v2, 
-                        optix::float3& n,
-                        float& t,
-                        float& v,
-                        float& w);
-
 class Triangle : public Object3D
 {
 public:
@@ -32,6 +23,7 @@ public:
       material(obj_material)
   { }
 
+  virtual bool intersect_triangle(const optix::Ray& r, const optix::float3& v0, const optix::float3& v1, const optix::float3& v2, optix::float3& n, float& t, float& v, float& w) const;
   virtual bool intersect(const optix::Ray& ray, HitInfo& hit, unsigned int prim_idx) const;
   virtual void transform(const optix::Matrix4x4& m);
   virtual optix::Aabb compute_bbox() const;

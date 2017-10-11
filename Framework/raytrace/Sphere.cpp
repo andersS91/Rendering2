@@ -38,9 +38,9 @@ bool Sphere::intersect(const Ray& r, HitInfo& hit, unsigned int prim_idx) const
 	//        (b) There is no need to handle the case where the 
 	//            discriminant is zero separately.
 
-	float bhalf = dot((r.origin-center),r.direction);
-	float c = dot(r.origin - center,r.origin-center)-pow(radius,2);
-	float d = pow(bhalf, 2) - c;
+	const float bhalf = dot((r.origin-center),r.direction);
+	const float c = dot(r.origin - center,r.origin-center)-pow(radius,2);
+	const float d = pow(bhalf, 2) - c;
 
 	if (d < 0) {
 		return false;

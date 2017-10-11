@@ -67,6 +67,8 @@ class TriMesh : public Object3D
   /// Apply a transformation matrix to the mesh
   virtual void transform(const optix::Matrix4x4& m);
 
+  virtual bool intersect_triangle(const optix::Ray& r, const optix::float3& v0, const optix::float3& v1, const optix::float3& v2, optix::float3& n, float& t, float& v, float& w) const;
+
   /// Get an axis aligned bounding box for the model.
   virtual optix::Aabb compute_bbox() const;
 
